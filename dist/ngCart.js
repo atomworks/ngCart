@@ -25,16 +25,11 @@ angular.module('ngCart', ['ngCart.directives'])
             ngCart.init();
         }
 
+        // Reload / resync cart data when skipping between tabs...
         angular.element($window).bind('focus', function(){
 
-            // if()
-            // console.log("FOCUS", ngCart.isEmpty());
-            console.log('fcus', $rootScope);
             ngCart.$restore(store.get('cart'));
-
             $rootScope.$apply();
-            // $rootScope.$broadcast('ngCart:change', {});
-
 
         });
 
@@ -195,7 +190,6 @@ angular.module('ngCart', ['ngCart.directives'])
 
 
         this.$restore = function(storedCart){
-            console.log('restore', storedCart);
             var _self = this;
             _self.init();
             _self.$cart.shipping = storedCart.shipping;
