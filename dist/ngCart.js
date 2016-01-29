@@ -12,7 +12,7 @@ angular.module('ngCart', ['ngCart.directives'])
         };
     })
 
-    .run(['$rootScope', 'ngCart','ngCartItem', 'store', function ($rootScope, ngCart, ngCartItem, store) {
+    .run(['$rootScope', '$window', 'ngCart', 'ngCartItem', 'store', function ($rootScope, $window, ngCart, ngCartItem, store) {
 
         $rootScope.$on('ngCart:change', function(){
             ngCart.$save();
@@ -24,6 +24,19 @@ angular.module('ngCart', ['ngCart.directives'])
         } else {
             ngCart.init();
         }
+
+        angular.element($window).bind('focus', function(){
+
+            // if()
+            // console.log("FOCUS", ngCart.isEmpty());
+            console.log('fcus', $rootScope);
+            ngCart.$restore(store.get('cart'));
+
+            $rootScope.$apply();
+            // $rootScope.$broadcast('ngCart:change', {});
+
+
+        });
 
     }])
 
@@ -182,6 +195,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
 
         this.$restore = function(storedCart){
+            console.log('restore', storedCart);
             var _self = this;
             _self.init();
             _self.$cart.shipping = storedCart.shipping;

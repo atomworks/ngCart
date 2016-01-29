@@ -12,7 +12,7 @@ angular.module('ngCart', ['ngCart.directives'])
         };
     })
 
-    .run(['$rootScope', 'ngCart','ngCartItem', 'store', function ($rootScope, ngCart, ngCartItem, store) {
+    .run(['$rootScope', '$window', 'ngCart', 'ngCartItem', 'store', function ($rootScope, $window, ngCart, ngCartItem, store) {
 
         $rootScope.$on('ngCart:change', function(){
             ngCart.$save();
@@ -24,6 +24,14 @@ angular.module('ngCart', ['ngCart.directives'])
         } else {
             ngCart.init();
         }
+
+        // Reload / resync cart data when skipping between tabs...
+        angular.element($window).bind('focus', function(){
+
+            ngCart.$restore(store.get('cart'));
+            $rootScope.$apply();
+
+        });
 
     }])
 
